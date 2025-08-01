@@ -849,7 +849,7 @@
                     showSadAnimation();
                 }
                 
-                resultEmoji.innerHTML = `<img src="img/emojis/${gif}" alt="${emoji}">`;
+                resultEmoji.innerHTML = `<img src="img:emojis/${gif}" alt="${emoji}">`;
                 resultText.innerHTML = `Предмет: <strong>${subjectName}</strong><br>Итог: <span class="grade-${grade}">${total.toFixed(1)}% (${grade})</span>`;
             } 
             else {
@@ -861,12 +861,12 @@
                 
                 const result = selectedOption.getAttribute('data-value');
                 if(result === 'pass') {
-                    resultEmoji.innerHTML = '<img src="img/emojis/happy.gif" alt="✅">';
+                    resultEmoji.innerHTML = '<img src="img:emojis/happy.gif" alt="✅">';
                     resultText.innerHTML = `Предмет: <strong>${subjectName}</strong><br>Результат: <span class="grade-5">Зачёт</span>`;
                     triggerConfetti();
                     createEmojiAnimation('✅', '🎉', '👍', '😊');
                 } else {
-                    resultEmoji.innerHTML = '<img src="img/emojis/sad.gif" alt="❌">';
+                    resultEmoji.innerHTML = '<img src="img:emojis/sad.gif" alt="❌">';
                     resultText.innerHTML = `Предмет: <strong>${subjectName}</strong><br>Результат: <span class="grade-2">Незачёт</span>`;
                     showSadAnimation();
                 }
@@ -967,7 +967,7 @@
         function showSadAnimation() {
             const sadContainer = document.createElement('div');
             sadContainer.className = 'sad-animation';
-            sadContainer.innerHTML = '<img src="img/emojis/sad.gif" alt="😢" style="height: 120px;">';
+            sadContainer.innerHTML = '<img src="img:emojis/sad.gif" alt="😢" style="height: 120px;">';
             
             document.body.appendChild(sadContainer);
             
