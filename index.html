@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#4e54c8">
+    <meta name="theme-color" content="#2c3e50">
     <title>СтудКалькулятор</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
         :root {
-            --primary: #4e54c8;
-            --secondary: #8f94fb;
-            --success: #4caf50;
-            --warning: #ff9800;
-            --danger: #f44336;
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light: #ecf0f1;
             --dark: #2c3e50;
-            --light: #f5f5f5;
-            --gray: #e0e0e0;
-            --text: #333333;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --text: #34495e;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * {
@@ -29,18 +30,20 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
             min-height: 100vh;
             padding: 0;
             margin: 0;
             color: var(--text);
             overflow-x: hidden;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232c3e50"/><path d="M0 50 L100 50 M50 0 L50 100" stroke="%2334495e" stroke-width="1"/></svg>');
+            background-size: 40px 40px;
         }
 
         .app-container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px 15px 70px;
+            padding: 20px 15px 100px;
             min-height: 100vh;
         }
 
@@ -49,6 +52,24 @@
             padding: 20px 0;
             margin-bottom: 20px;
             position: relative;
+            background: rgba(44, 62, 80, 0.9);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .university-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 3px solid white;
         }
 
         .logo {
@@ -60,24 +81,36 @@
 
         h1 {
             font-size: 2.2rem;
-            color: var(--primary);
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .app-subtitle {
+            color: #bdc3c7;
+            font-size: 1rem;
+            margin-top: 5px;
+            letter-spacing: 1px;
         }
 
         .tab-container {
-            background: white;
+            background: var(--card-bg);
             border-radius: 20px;
             box-shadow: var(--shadow);
             overflow: hidden;
             margin-bottom: 20px;
-            transition: all 0.4s ease;
-            min-height: 400px;
+            transition: var(--transition);
+            min-height: 450px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
         }
 
         .tab-content {
             padding: 25px;
             display: none;
             animation: fadeIn 0.5s ease;
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         .tab-content.active {
@@ -96,6 +129,8 @@
             margin-bottom: 20px;
             color: var(--primary);
             font-size: 1.4rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
         }
 
         .input-group {
@@ -112,16 +147,17 @@
         select, input, textarea {
             width: 100%;
             padding: 14px;
-            border: 2px solid var(--gray);
+            border: 2px solid #dfe6e9;
             border-radius: 12px;
             font-size: 16px;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            background: white;
         }
 
         select:focus, input:focus, textarea:focus {
-            border-color: var(--primary);
+            border-color: var(--secondary);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.2);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
 
         .hidden {
@@ -137,7 +173,7 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -149,7 +185,7 @@
 
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 7px 14px rgba(78, 84, 200, 0.3);
+            box-shadow: 0 7px 14px rgba(44, 62, 80, 0.3);
         }
 
         .btn:active {
@@ -160,17 +196,22 @@
             text-align: center;
             padding: 25px;
             border-radius: 15px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             margin: 20px 0;
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
+            border: 2px solid var(--secondary);
         }
 
         .result-emoji {
-            font-size: 4rem;
+            height: 100px;
             margin-bottom: 20px;
             animation: bounce 1s ease;
+        }
+
+        .result-emoji img {
+            height: 100%;
         }
 
         @keyframes bounce {
@@ -180,15 +221,15 @@
         }
 
         .result-text {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             margin-bottom: 20px;
         }
 
-        .grade-5 { color: #4caf50; }
-        .grade-4 { color: #2196f3; }
-        .grade-3 { color: #ff9800; }
-        .grade-2 { color: #f44336; }
+        .grade-5 { color: #27ae60; }
+        .grade-4 { color: #2980b9; }
+        .grade-3 { color: #f39c12; }
+        .grade-2 { color: #e74c3c; }
 
         #confetti-canvas {
             position: absolute;
@@ -205,9 +246,9 @@
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 15px;
-            box-shadow: var(--shadow);
-            border-left: 5px solid var(--primary);
-            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--secondary);
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
         }
@@ -232,7 +273,7 @@
 
         .subject-date {
             font-size: 0.85rem;
-            color: #777;
+            color: #7f8c8d;
         }
 
         .subject-result {
@@ -248,7 +289,7 @@
         }
 
         .icon-btn {
-            background: var(--gray);
+            background: var(--light);
             border: none;
             width: 40px;
             height: 40px;
@@ -257,25 +298,33 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            color: var(--dark);
         }
 
         .icon-btn:hover {
-            background: var(--primary);
+            background: var(--secondary);
             color: white;
         }
 
         .notes-container {
             display: grid;
-            gap: 20px;
+            gap: 15px;
         }
 
         .note-card {
             background: white;
             border-radius: 15px;
-            padding: 20px;
-            box-shadow: var(--shadow);
-            position: relative;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 3px solid var(--secondary);
+        }
+
+        .note-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .note-header {
@@ -289,15 +338,23 @@
             font-weight: bold;
             font-size: 1.1rem;
             color: var(--primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
         }
 
         .note-date {
-            font-size: 0.85rem;
-            color: #777;
+            font-size: 0.8rem;
+            color: #7f8c8d;
         }
 
-        .note-content {
-            line-height: 1.6;
+        .note-preview {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .bottom-nav {
@@ -308,9 +365,11 @@
             background: white;
             display: flex;
             justify-content: space-around;
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
             padding: 12px 0;
             z-index: 100;
+            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.9);
         }
 
         .nav-item {
@@ -318,18 +377,19 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 70px;
+            width: 80px;
             padding: 8px 0;
             border-radius: 15px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            color: #777;
+            transition: var(--transition);
+            color: #7f8c8d;
             font-size: 0.8rem;
         }
 
         .nav-item.active {
             color: var(--primary);
             transform: translateY(-10px);
+            background: rgba(52, 152, 219, 0.1);
         }
 
         .nav-item i {
@@ -356,7 +416,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -364,47 +423,87 @@
             animation: fadeIn 0.5s ease;
         }
 
-        .rain {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-
-        .drop {
-            position: absolute;
-            width: 2px;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.5);
-            animation: rain 1.5s linear infinite;
-        }
-
-        @keyframes rain {
-            0% { transform: translateY(-50px) rotate(10deg); opacity: 1; }
-            100% { transform: translateY(300px) rotate(10deg); opacity: 0; }
-        }
-
         .empty-state {
             text-align: center;
             padding: 40px 20px;
-            color: #777;
+            color: #7f8c8d;
         }
 
         .empty-state i {
             font-size: 3rem;
             margin-bottom: 15px;
-            color: var(--gray);
+            color: #bdc3c7;
         }
 
-        /* Иконки через псевдоэлементы */
-        .icon {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            background-size: contain;
-            background-repeat: no-repeat;
+        .pass-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .pass-option {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .pass-option.selected {
+            border-color: var(--secondary);
+            background: rgba(52, 152, 219, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .pass-option i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Модальное окно для заметок */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
         }
 
         /* Адаптивность */
@@ -414,11 +513,21 @@
             }
             
             .app-container {
-                padding: 15px 10px 70px;
+                padding: 15px 10px 100px;
             }
             
             .tab-content {
                 padding: 20px 15px;
+            }
+            
+            .university-logo {
+                width: 90px;
+                height: 90px;
+                font-size: 2rem;
+            }
+            
+            .pass-options {
+                flex-direction: column;
             }
         }
     </style>
@@ -426,9 +535,11 @@
 <body>
     <div class="app-container">
         <header>
+            <div class="university-logo">🎓</div>
             <div class="logo">
-                <h1>🎓 СтудКалькулятор</h1>
+                <h1>СтудКалькулятор</h1>
             </div>
+            <div class="app-subtitle">Расчет оценок и ведение учебных записей</div>
         </header>
 
         <div class="tab-container">
@@ -463,11 +574,17 @@
                 
                 <div id="pass-fields" class="hidden">
                     <div class="input-group">
-                        <label for="pass-result">Результат зачёта</label>
-                        <select id="pass-result">
-                            <option value="pass">Зачёт</option>
-                            <option value="fail">Незачёт</option>
-                        </select>
+                        <label>Результат зачёта</label>
+                        <div class="pass-options">
+                            <div class="pass-option" data-value="pass">
+                                <div>✅</div>
+                                <div>Зачёт</div>
+                            </div>
+                            <div class="pass-option" data-value="fail">
+                                <div>❌</div>
+                                <div>Незачёт</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -507,7 +624,7 @@
                 
                 <div class="input-group">
                     <label for="note-content">Содержание</label>
-                    <textarea id="note-content" rows="5" placeholder="Ваши заметки..."></textarea>
+                    <textarea id="note-content" rows="4" placeholder="Ваши заметки..."></textarea>
                 </div>
                 
                 <button id="save-note-btn" class="btn">Сохранить заметку</button>
@@ -521,6 +638,24 @@
                     <h3>Нет сохраненных заметок</h3>
                     <p>Добавьте свою первую заметку</p>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Модальное окно для заметок -->
+        <div id="note-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2 id="modal-title" class="section-title"></h2>
+                <div class="input-group">
+                    <label for="edit-note-title">Заголовок</label>
+                    <input type="text" id="edit-note-title">
+                </div>
+                <div class="input-group">
+                    <label for="edit-note-content">Содержание</label>
+                    <textarea id="edit-note-content" rows="8"></textarea>
+                </div>
+                <button id="update-note-btn" class="btn">Обновить заметку</button>
+                <button id="delete-note-btn" class="btn" style="background: linear-gradient(to right, #e74c3c, #c0392b); margin-top: 10px;">Удалить заметку</button>
             </div>
         </div>
         
@@ -558,6 +693,15 @@
         const navItems = document.querySelectorAll('.nav-item');
         const tabContents = document.querySelectorAll('.tab-content');
         const canvas = document.getElementById('confetti-canvas');
+        const passOptions = document.querySelectorAll('.pass-option');
+        const noteModal = document.getElementById('note-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const updateNoteBtn = document.getElementById('update-note-btn');
+        const deleteNoteBtn = document.getElementById('delete-note-btn');
+        const modalTitle = document.getElementById('modal-title');
+        
+        // Переменные для работы с заметками
+        let currentNoteId = null;
         
         // Переключение между экзаменом/зачетом
         subjectType.addEventListener('change', () => {
@@ -565,12 +709,20 @@
                 examFields.classList.remove('hidden');
                 passFields.classList.add('hidden');
             } else {
-                passFields.classList.add('hidden');
                 examFields.classList.add('hidden');
+                passFields.classList.remove('hidden');
             }
             
             // Скрываем результат при изменении типа
             resultSection.classList.add('hidden');
+        });
+        
+        // Выбор результата зачета
+        passOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                passOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+            });
         });
         
         // Расчет оценки
@@ -580,7 +732,7 @@
             const subjectName = document.getElementById('subject-name').value;
             
             if(!subjectName) {
-                alert('Пожалуйста, введите название предмета');
+                showNotification('Пожалуйста, введите название предмета');
                 return;
             }
             
@@ -589,57 +741,67 @@
                 const exam = parseInt(document.getElementById('exam-score').value);
                 
                 if(isNaN(rating) || isNaN(exam)) {
-                    alert('Пожалуйста, введите корректные значения для рейтинга и экзамена');
+                    showNotification('Пожалуйста, введите корректные значения для рейтинга и экзамена');
                     return;
                 }
                 
                 if(rating < 0 || rating > 100 || exam < 0 || exam > 100) {
-                    alert('Значения должны быть от 0 до 100');
+                    showNotification('Значения должны быть от 0 до 100');
                     return;
                 }
                 
                 const total = (0.6 * rating) + (0.4 * exam);
                 let grade = '2';
-                let emoji = '😭';
+                let emoji = '😢';
+                let gif = 'sad.gif';
                 
                 if(total >= 85) {
                     grade = '5';
                     emoji = '🎉';
+                    gif = 'party.gif';
                     triggerConfetti();
                     createEmojiAnimation('🎉', '🎊', '✨', '🥳');
                 } else if(total >= 65) {
                     grade = '4';
                     emoji = '👍';
+                    gif = 'happy.gif';
                     triggerConfetti();
                     createEmojiAnimation('👍', '👏', '💪', '😊');
                 } else if(total >= 50) {
                     grade = '3';
                     emoji = '😌';
+                    gif = 'neutral.gif';
                 } else {
                     grade = '2';
                     emoji = '😢';
+                    gif = 'sad.gif';
                     showSadAnimation();
                 }
                 
-                resultEmoji.innerHTML = emoji;
-                resultText.innerHTML = `Предмет: ${subjectName}<br>Итог: <span class="grade-${grade}">${total.toFixed(1)}% (${grade})</span>`;
+                resultEmoji.innerHTML = `<img src="img/emojis/${gif}" alt="${emoji}">`;
+                resultText.innerHTML = `Предмет: <strong>${subjectName}</strong><br>Итог: <span class="grade-${grade}">${total.toFixed(1)}% (${grade})</span>`;
             } 
             else {
-                const result = document.getElementById('pass-result').value;
+                const selectedOption = document.querySelector('.pass-option.selected');
+                if(!selectedOption) {
+                    showNotification('Пожалуйста, выберите результат зачёта');
+                    return;
+                }
+                
+                const result = selectedOption.getAttribute('data-value');
                 if(result === 'pass') {
-                    resultEmoji.innerHTML = '✅';
-                    resultText.innerHTML = `Предмет: ${subjectName}<br>Результат: <span class="grade-5">Зачёт</span>`;
+                    resultEmoji.innerHTML = '<img src="img/emojis/happy.gif" alt="✅">';
+                    resultText.innerHTML = `Предмет: <strong>${subjectName}</strong><br>Результат: <span class="grade-5">Зачёт</span>`;
                     triggerConfetti();
                     createEmojiAnimation('✅', '🎉', '👍', '😊');
                 } else {
-                    resultEmoji.innerHTML = '❌';
-                    resultText.innerHTML = `Предмет: ${subjectName}<br>Результат: <span class="grade-2">Незачёт</span>`;
+                    resultEmoji.innerHTML = '<img src="img/emojis/sad.gif" alt="❌">';
+                    resultText.innerHTML = `Предмет: <strong>${subjectName}</strong><br>Результат: <span class="grade-2">Незачёт</span>`;
                     showSadAnimation();
                 }
             }
             
             resultSection.classList.remove('hidden');
-            resultSection.scrollIntoView({ behavior: 'smooth' });
         }
         
         // Анимация конфетти
@@ -734,19 +896,9 @@
         function showSadAnimation() {
             const sadContainer = document.createElement('div');
             sadContainer.className = 'sad-animation';
-            sadContainer.innerHTML = '<div style="font-size: 5rem">😢</div><div class="rain"></div>';
+            sadContainer.innerHTML = '<img src="img/emojis/sad.gif" alt="😢" style="height: 120px;">';
             
             document.body.appendChild(sadContainer);
-            
-            // Создаем капли дождя
-            const rainContainer = sadContainer.querySelector('.rain');
-            for (let i = 0; i < 50; i++) {
-                const drop = document.createElement('div');
-                drop.className = 'drop';
-                drop.style.left = `${Math.random() * 100}%`;
-                drop.style.animationDelay = `${Math.random() * 2}s`;
-                rainContainer.appendChild(drop);
-            }
             
             setTimeout(() => {
                 sadContainer.remove();
@@ -774,7 +926,8 @@
                 else if(subject.total >= 50) subject.grade = '3';
                 else subject.grade = '2';
             } else {
-                subject.result = document.getElementById('pass-result').value;
+                const selectedOption = document.querySelector('.pass-option.selected');
+                subject.result = selectedOption ? selectedOption.getAttribute('data-value') : 'pass';
             }
             
             // Сохранение в localStorage
@@ -789,6 +942,7 @@
             document.getElementById('subject-name').value = '';
             document.getElementById('rating').value = '';
             document.getElementById('exam-score').value = '';
+            passOptions.forEach(opt => opt.classList.remove('selected'));
             resultSection.classList.add('hidden');
         }
         
@@ -854,14 +1008,12 @@
             } else {
                 passFields.classList.remove('hidden');
                 examFields.classList.add('hidden');
-                document.getElementById('pass-result').value = subject.result;
+                const option = document.querySelector(`.pass-option[data-value="${subject.result}"]`);
+                if(option) option.classList.add('selected');
             }
             
             // Удаляем старый предмет
             deleteSubject(id);
-            
-            // Прокручиваем к форме
-            document.getElementById('subject-name').scrollIntoView({ behavior: 'smooth' });
         }
         
         // Сохранение заметки
@@ -872,7 +1024,7 @@
             const content = document.getElementById('note-content').value;
             
             if(!title || !content) {
-                alert('Пожалуйста, заполните все поля');
+                showNotification('Пожалуйста, заполните все поля');
                 return;
             }
             
@@ -908,27 +1060,82 @@
             
             noNotes.classList.add('hidden');
             notesContainer.innerHTML = notes.map(note => `
-                <div class="note-card">
+                <div class="note-card" data-id="${note.id}">
                     <div class="note-header">
                         <div class="note-title">${note.title}</div>
                         <div class="note-date">${note.date}</div>
                     </div>
-                    <div class="note-content">${note.content}</div>
-                    <div class="card-buttons">
-                        <button class="icon-btn" onclick="deleteNote(${note.id})">🗑️</button>
-                    </div>
+                    <div class="note-preview">${note.content.substring(0, 60)}${note.content.length > 60 ? '...' : ''}</div>
                 </div>
             `).join('');
+            
+            // Добавляем обработчики событий для заметок
+            document.querySelectorAll('.note-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const noteId = parseInt(card.getAttribute('data-id'));
+                    openNoteModal(noteId);
+                });
+            });
         }
         
+        // Открытие модального окна заметки
+        function openNoteModal(noteId) {
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+            const note = notes.find(n => n.id === noteId);
+            
+            if(!note) return;
+            
+            currentNoteId = noteId;
+            modalTitle.textContent = note.title;
+            document.getElementById('edit-note-title').value = note.title;
+            document.getElementById('edit-note-content').value = note.content;
+            
+            noteModal.style.display = 'flex';
+        }
+        
+        // Обновление заметки
+        updateNoteBtn.addEventListener('click', () => {
+            if(!currentNoteId) return;
+            
+            const title = document.getElementById('edit-note-title').value;
+            const content = document.getElementById('edit-note-content').value;
+            
+            if(!title || !content) {
+                showNotification('Пожалуйста, заполните все поля');
+                return;
+            }
+            
+            let notes = JSON.parse(localStorage.getItem('notes')) || [];
+            const noteIndex = notes.findIndex(n => n.id === currentNoteId);
+            
+            if(noteIndex !== -1) {
+                notes[noteIndex].title = title;
+                notes[noteIndex].content = content;
+                localStorage.setItem('notes', JSON.stringify(notes));
+                
+                renderNotes();
+                showNotification('📝 Заметка обновлена!');
+                noteModal.style.display = 'none';
+            }
+        });
+        
         // Удаление заметки
-        window.deleteNote = function(id) {
-            let saved = JSON.parse(localStorage.getItem('notes')) || [];
-            saved = saved.filter(note => note.id !== id);
-            localStorage.setItem('notes', JSON.stringify(saved));
+        deleteNoteBtn.addEventListener('click', () => {
+            if(!currentNoteId) return;
+            
+            let notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes = notes.filter(note => note.id !== currentNoteId);
+            localStorage.setItem('notes', JSON.stringify(notes));
+            
             renderNotes();
             showNotification('🗑️ Заметка удалена');
-        }
+            noteModal.style.display = 'none';
+        });
+        
+        // Закрытие модального окна
+        closeModal.addEventListener('click', () => {
+            noteModal.style.display = 'none';
+        });
         
         // Переключение вкладок
         navItems.forEach(item => {
@@ -964,7 +1171,7 @@
             notification.textContent = text;
             notification.style.cssText = `
                 position: fixed;
-                bottom: 80px;
+                bottom: 100px;
                 left: 50%;
                 transform: translateX(-50%);
                 background: var(--primary);
@@ -998,6 +1205,9 @@
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
             });
+            
+            // Выбираем "Зачёт" по умолчанию
+            document.querySelector('.pass-option[data-value="pass"]').classList.add('selected');
         });
     </script>
 </body>
