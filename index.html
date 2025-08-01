@@ -17,7 +17,7 @@
             --light: #ecf0f1;
             --dark: #2c3e50;
             --text: #34495e;
-            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-bg: rgba(255, 255, 255, 0.95);
             --shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -41,56 +41,96 @@
         }
 
         .app-container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px 15px 100px;
+            padding: 20px;
             min-height: 100vh;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
         }
 
-        header {
-            text-align: center;
-            padding: 20px 0;
-            margin-bottom: 20px;
-            position: relative;
+        .sidebar {
             background: rgba(44, 62, 80, 0.9);
             border-radius: 20px;
             box-shadow: var(--shadow);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
         }
 
         .university-logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 15px;
+            width: 180px;
+            height: 180px;
             background: linear-gradient(135deg, #3498db, #2c3e50);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 4rem;
             color: white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            border: 3px solid white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 5px solid white;
+            margin-bottom: 25px;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        h1 {
-            font-size: 2.2rem;
+        .sidebar-title {
             color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            letter-spacing: 1px;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
 
         .app-subtitle {
             color: #bdc3c7;
             font-size: 1rem;
-            margin-top: 5px;
-            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .student-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .student-image::after {
+            content: "🎓 Успешная учёба!";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .student-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .tab-container {
@@ -98,9 +138,7 @@
             border-radius: 20px;
             box-shadow: var(--shadow);
             overflow: hidden;
-            margin-bottom: 20px;
             transition: var(--transition);
-            min-height: 450px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
         }
@@ -109,8 +147,6 @@
             padding: 25px;
             display: none;
             animation: fadeIn 0.5s ease;
-            max-height: 500px;
-            overflow-y: auto;
         }
 
         .tab-content.active {
@@ -507,136 +543,171 @@
         }
 
         /* Адаптивность */
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-            
+        @media (max-width: 900px) {
             .app-container {
-                padding: 15px 10px 100px;
+                grid-template-columns: 1fr;
             }
             
-            .tab-content {
-                padding: 20px 15px;
+            .sidebar {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .app-container {
+                padding: 10px;
+            }
+            
+            .sidebar {
+                padding: 20px;
             }
             
             .university-logo {
-                width: 90px;
-                height: 90px;
-                font-size: 2rem;
+                width: 120px;
+                height: 120px;
+                font-size: 3rem;
+            }
+            
+            .sidebar-title {
+                font-size: 1.5rem;
+            }
+            
+            .student-image {
+                height: 200px;
             }
             
             .pass-options {
                 flex-direction: column;
+            }
+            
+            .tab-content {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <header>
+        <!-- Боковая панель с логотипом и изображением -->
+        <div class="sidebar">
             <div class="university-logo">🎓</div>
-            <div class="logo">
-                <h1>СтудКалькулятор</h1>
+            <h2 class="sidebar-title">СтудКалькулятор</h2>
+            <div class="app-subtitle">Управляй своей успеваемостью</div>
+            
+            <div class="student-image">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+                    <rect width="100%" height="100%" fill="#3498db"/>
+                    <circle cx="250" cy="180" r="80" fill="#ecf0f1"/>
+                    <path d="M 150 280 Q 250 400 350 280 L 350 450 L 150 450 Z" fill="#e74c3c"/>
+                    <circle cx="220" cy="160" r="10" fill="#2c3e50"/>
+                    <circle cx="280" cy="160" r="10" fill="#2c3e50"/>
+                    <path d="M 220 200 Q 250 220 280 200" stroke="#2c3e50" stroke-width="5" fill="none"/>
+                    <rect x="100" y="450" width="300" height="50" fill="#2c3e50"/>
+                    <path d="M 200 320 L 200 370 L 180 370 L 180 320 Z" fill="#f39c12"/>
+                    <path d="M 300 320 L 300 370 L 320 370 L 320 320 Z" fill="#f39c12"/>
+                </svg>
             </div>
-            <div class="app-subtitle">Расчет оценок и ведение учебных записей</div>
-        </header>
-
-        <div class="tab-container">
-            <!-- Вкладка калькулятора -->
-            <div id="calculator-tab" class="tab-content active">
-                <h2 class="section-title">📝 Калькулятор оценок</h2>
-                
-                <div class="input-group">
-                    <label for="subject-type">Тип предмета</label>
-                    <select id="subject-type">
-                        <option value="exam">Экзамен</option>
-                        <option value="pass">Зачёт</option>
-                    </select>
-                </div>
-                
-                <div class="input-group">
-                    <label for="subject-name">Название предмета</label>
-                    <input type="text" id="subject-name" placeholder="Введите название предмета">
-                </div>
-                
-                <div id="exam-fields">
+        </div>
+        
+        <!-- Основной контент -->
+        <div class="main-content">
+            <div class="tab-container">
+                <!-- Вкладка калькулятора -->
+                <div id="calculator-tab" class="tab-content active">
+                    <h2 class="section-title">📝 Калькулятор оценок</h2>
+                    
                     <div class="input-group">
-                        <label for="rating">Рейтинг (0-100%)</label>
-                        <input type="number" id="rating" placeholder="Ваш рейтинг" min="0" max="100">
+                        <label for="subject-type">Тип предмета</label>
+                        <select id="subject-type">
+                            <option value="exam">Экзамен</option>
+                            <option value="pass">Зачёт</option>
+                        </select>
                     </div>
                     
                     <div class="input-group">
-                        <label for="exam-score">Экзамен (0-100%)</label>
-                        <input type="number" id="exam-score" placeholder="Оценка за экзамен" min="0" max="100">
+                        <label for="subject-name">Название предмета</label>
+                        <input type="text" id="subject-name" placeholder="Введите название предмета">
                     </div>
-                </div>
-                
-                <div id="pass-fields" class="hidden">
-                    <div class="input-group">
-                        <label>Результат зачёта</label>
-                        <div class="pass-options">
-                            <div class="pass-option" data-value="pass">
-                                <div>✅</div>
-                                <div>Зачёт</div>
-                            </div>
-                            <div class="pass-option" data-value="fail">
-                                <div>❌</div>
-                                <div>Незачёт</div>
+                    
+                    <div id="exam-fields">
+                        <div class="input-group">
+                            <label for="rating">Рейтинг (0-100%)</label>
+                            <input type="number" id="rating" placeholder="Ваш рейтинг" min="0" max="100">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="exam-score">Экзамен (0-100%)</label>
+                            <input type="number" id="exam-score" placeholder="Оценка за экзамен" min="0" max="100">
+                        </div>
+                    </div>
+                    
+                    <div id="pass-fields" class="hidden">
+                        <div class="input-group">
+                            <label>Результат зачёта</label>
+                            <div class="pass-options">
+                                <div class="pass-option" data-value="pass">
+                                    <div>✅</div>
+                                    <div>Зачёт</div>
+                                </div>
+                                <div class="pass-option" data-value="fail">
+                                    <div>❌</div>
+                                    <div>Незачёт</div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    
+                    <button id="calculate-btn" class="btn">Рассчитать</button>
+                    
+                    <div id="result-section" class="result-container hidden">
+                        <div id="result-emoji"></div>
+                        <div id="result-text"></div>
+                        <canvas id="confetti-canvas"></canvas>
+                        <button id="save-btn" class="btn">Сохранить предмет</button>
+                    </div>
                 </div>
                 
-                <button id="calculate-btn" class="btn">Рассчитать</button>
-                
-                <div id="result-section" class="result-container hidden">
-                    <div id="result-emoji"></div>
-                    <div id="result-text"></div>
-                    <canvas id="confetti-canvas"></canvas>
-                    <button id="save-btn" class="btn">Сохранить предмет</button>
-                </div>
-            </div>
-            
-            <!-- Вкладка предметов -->
-            <div id="subjects-tab" class="tab-content">
-                <h2 class="section-title">📚 Мои предметы</h2>
-                
-                <div id="saved-items">
-                    <!-- Предметы будут добавляться сюда -->
+                <!-- Вкладка предметов -->
+                <div id="subjects-tab" class="tab-content">
+                    <h2 class="section-title">📚 Мои предметы</h2>
+                    
+                    <div id="saved-items">
+                        <!-- Предметы будут добавляться сюда -->
+                    </div>
+                    
+                    <div id="no-subjects" class="empty-state">
+                        <div>📭</div>
+                        <h3>Нет сохраненных предметов</h3>
+                        <p>Добавьте предметы через калькулятор</p>
+                    </div>
                 </div>
                 
-                <div id="no-subjects" class="empty-state">
-                    <div>📭</div>
-                    <h3>Нет сохраненных предметов</h3>
-                    <p>Добавьте предметы через калькулятор</p>
-                </div>
-            </div>
-            
-            <!-- Вкладка дневника -->
-            <div id="diary-tab" class="tab-content">
-                <h2 class="section-title">📓 Дневник заметок</h2>
-                
-                <div class="input-group">
-                    <label for="note-title">Заголовок заметки</label>
-                    <input type="text" id="note-title" placeholder="Название заметки">
-                </div>
-                
-                <div class="input-group">
-                    <label for="note-content">Содержание</label>
-                    <textarea id="note-content" rows="4" placeholder="Ваши заметки..."></textarea>
-                </div>
-                
-                <button id="save-note-btn" class="btn">Сохранить заметку</button>
-                
-                <div id="notes-container" class="notes-container">
-                    <!-- Заметки будут добавляться сюда -->
-                </div>
-                
-                <div id="no-notes" class="empty-state">
-                    <div>📝</div>
-                    <h3>Нет сохраненных заметок</h3>
-                    <p>Добавьте свою первую заметку</p>
+                <!-- Вкладка дневника -->
+                <div id="diary-tab" class="tab-content">
+                    <h2 class="section-title">📓 Дневник заметок</h2>
+                    
+                    <div class="input-group">
+                        <label for="note-title">Заголовок заметки</label>
+                        <input type="text" id="note-title" placeholder="Название заметки">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="note-content">Содержание</label>
+                        <textarea id="note-content" rows="4" placeholder="Ваши заметки..."></textarea>
+                    </div>
+                    
+                    <button id="save-note-btn" class="btn">Сохранить заметку</button>
+                    
+                    <div id="notes-container" class="notes-container">
+                        <!-- Заметки будут добавляться сюда -->
+                    </div>
+                    
+                    <div id="no-notes" class="empty-state">
+                        <div>📝</div>
+                        <h3>Нет сохраненных заметок</h3>
+                        <p>Добавьте свою первую заметку</p>
+                    </div>
                 </div>
             </div>
         </div>
