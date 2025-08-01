@@ -1,20 +1,21 @@
 {
   "name": "СтудКалькулятор",
-  "short_name": "Калькулятор",
-  "start_url": ".",
+  "short_name": "StudCalc",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#2c3e50",
+  "background_color": "#4e54c8",
+  "theme_color": "#4e54c8",
+  "description": "Приложение для расчета и отслеживания оценок студентов",
   "icons": [
     {
-      "src": "icon.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
-      "src": "icon.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
