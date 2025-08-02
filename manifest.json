@@ -3,9 +3,9 @@
   "short_name": "StudCalc",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#4e54c8",
-  "theme_color": "#4e54c8",
-  "description": "Приложение для расчета и отслеживания оценок студентов",
+  "background_color": "#2c3e50",
+  "theme_color": "#3498db",
+  "description": "Приложение для расчета и отслеживания учебных оценок",
   "icons": [
     {
       "src": "icon-192x192.png",
