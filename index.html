@@ -8,6 +8,85 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
+        /* Добавьте этот код в существующую секцию <style> */
+
+/* Стили для инструкции по установке */
+.install-instructions {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    flex-direction: column;
+}
+
+.install-content {
+    background: #2c3e50;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.install-steps {
+    text-align: left;
+    margin: 20px 0;
+    line-height: 1.8;
+}
+
+.close-instructions {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+    background: #e74c3c;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Стили для кнопки установки */
+.install-btn {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: linear-gradient(to right, #27ae60, #2ecc71);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(39, 174, 96, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0); }
+}
+
+.hidden {
+    display: none;
+}
         :root {
             --primary: #2c3e50;
             --secondary: #3498db;
@@ -622,10 +701,32 @@
     </style>
 </head>
 <body>
-    <!-- Кнопка установки приложения -->
-    <button id="installBtn" class="install-btn hidden">
-        <span>📲</span> Установить приложение
-    </button>
+<button id="installBtn" class="install-btn">
+    <span>📲</span> Установить приложение
+</button>
+
+<div id="installInstructions" class="install-instructions hidden">
+    <div class="close-instructions">×</div>
+    <div class="install-content">
+        <h2>Как установить приложение</h2>
+        <div class="install-steps">
+            <h3>На iOS:</h3>
+            <p>1. Нажмите кнопку "Поделиться" (квадрат со стрелкой вверх)</p>
+            <p>2. Прокрутите меню вниз и выберите "На экран «Домой»"</p>
+            <p>3. Нажмите "Добавить" в правом верхнем углу</p>
+            
+            <h3>На Android:</h3>
+            <p>1. Нажмите меню браузера (три точки)</p>
+            <p>2. Выберите "Установить приложение"</p>
+            <p>3. Подтвердите установку</p>
+            
+            <h3>На компьютере:</h3>
+            <p>1. В Chrome: нажмите значок установки в адресной строке</p>
+            <p>2. В Safari: используйте меню "Файл" → "Добавить на экран «Домой»"</p>
+        </div>
+        <button id="understandBtn" class="btn">Понятно!</button>
+    </div>
+</div>
 
     <div class="app-container">
         <!-- Боковая панель с логотипом и изображением -->
@@ -1394,5 +1495,83 @@
             });
         }
     </script>
+    // Добавьте этот код в конец существующей секции <script>
+
+// ========== PWA ФУНКЦИОНАЛ ========== //
+
+// Элементы для PWA
+const installBtn = document.getElementById('installBtn');
+const installInstructions = document.getElementById('installInstructions');
+const closeInstructions = document.querySelector('.close-instructions');
+const understandBtn = document.getElementById('understandBtn');
+let deferredPrompt;
+
+// Показать инструкцию по установке
+function showInstallInstructions() {
+    installInstructions.classList.remove('hidden');
+}
+
+// Скрыть инструкцию по установке
+function hideInstallInstructions() {
+    installInstructions.classList.add('hidden');
+}
+
+// Обработчики событий для инструкции
+closeInstructions.addEventListener('click', hideInstallInstructions);
+understandBtn.addEventListener('click', hideInstallInstructions);
+installBtn.addEventListener('click', showInstallInstructions);
+
+// Обработка события beforeinstallprompt
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Предотвращаем автоматическое отображение подсказки
+    e.preventDefault();
+    // Сохраняем событие для последующего использования
+    deferredPrompt = e;
+    
+    // Показываем нашу кастомную кнопку установки
+    installBtn.classList.remove('hidden');
+});
+
+// Обработка успешной установки
+window.addEventListener('appinstalled', () => {
+    console.log('Приложение успешно установлено');
+    installBtn.classList.add('hidden');
+    hideInstallInstructions();
+});
+
+// Проверка, является ли приложение установленным
+function isRunningAsPWA() {
+    return window.matchMedia('(display-mode: standalone)').matches || 
+           window.navigator.standalone ||
+           document.referrer.includes('android-app://');
+}
+
+// Инициализация PWA
+function initPWA() {
+    // Регистрируем Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+            .then(registration => {
+                console.log('Service Worker зарегистрирован:', registration);
+            })
+            .catch(error => {
+                console.log('Ошибка регистрации Service Worker:', error);
+            });
+    }
+
+    // Скрываем кнопку, если приложение уже установлено
+    if (isRunningAsPWA()) {
+        installBtn.classList.add('hidden');
+    }
+}
+
+// В конце инициализации приложения вызовите initPWA()
+// Добавьте этот вызов в существующий обработчик DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    // ... ваш существующий код инициализации ...
+    
+    // Инициализация PWA
+    initPWA();
+});
 </body>
 </html>
