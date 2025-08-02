@@ -542,6 +542,33 @@
             transform: rotate(90deg);
         }
 
+        /* Кнопка установки PWA */
+        .install-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(39, 174, 96, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0); }
+        }
+
         /* Адаптивность */
         @media (max-width: 900px) {
             .app-container {
@@ -551,6 +578,13 @@
             .sidebar {
                 position: relative;
                 top: 0;
+            }
+            
+            .install-btn {
+                bottom: 70px;
+                right: 10px;
+                font-size: 14px;
+                padding: 10px 15px;
             }
         }
 
@@ -588,6 +622,11 @@
     </style>
 </head>
 <body>
+    <!-- Кнопка установки приложения -->
+    <button id="installBtn" class="install-btn hidden">
+        <span>📲</span> Установить приложение
+    </button>
+
     <div class="app-container">
         <!-- Боковая панель с логотипом и изображением -->
         <div class="sidebar">
@@ -770,6 +809,7 @@
         const updateNoteBtn = document.getElementById('update-note-btn');
         const deleteNoteBtn = document.getElementById('delete-note-btn');
         const modalTitle = document.getElementById('modal-title');
+        const installBtn = document.getElementById('installBtn');
         
         // Переменные для работы с заметками
         let currentNoteId = null;
@@ -1279,7 +1319,80 @@
             
             // Выбираем "Зачёт" по умолчанию
             document.querySelector('.pass-option[data-value="pass"]').classList.add('selected');
+            
+            // Инициализация PWA
+            initPWA();
         });
+        
+        // ========== PWA УСТАНОВКА ========== //
+        
+        function initPWA() {
+            // Проверяем поддержку PWA
+            if ('serviceWorker' in navigator && 'BeforeInstallPromptEvent' in window) {
+                // Регистрируем Service Worker
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker зарегистрирован:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Ошибка регистрации Service Worker:', error);
+                    });
+                
+                // Обработка события установки
+                let deferredPrompt;
+                
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    // Предотвращаем автоматическое отображение подсказки
+                    e.preventDefault();
+                    // Сохраняем событие для последующего использования
+                    deferredPrompt = e;
+                    // Показываем кнопку установки
+                    installBtn.classList.remove('hidden');
+                });
+                
+                // Обработка клика на кнопке установки
+                installBtn.addEventListener('click', () => {
+                    if (deferredPrompt) {
+                        // Показываем подсказку установки
+                        deferredPrompt.prompt();
+                        
+                        // Ждем ответа пользователя
+                        deferredPrompt.userChoice.then((choiceResult) => {
+                            if (choiceResult.outcome === 'accepted') {
+                                console.log('Пользователь установил приложение');
+                            } else {
+                                console.log('Пользователь отказался от установки');
+                            }
+                            // Сбрасываем ссылку на событие
+                            deferredPrompt = null;
+                            // Скрываем кнопку установки
+                            installBtn.classList.add('hidden');
+                        });
+                    }
+                });
+                
+                // Скрываем кнопку после установки
+                window.addEventListener('appinstalled', () => {
+                    console.log('Приложение успешно установлено');
+                    installBtn.classList.add('hidden');
+                });
+            }
+        }
+    </script>
+    
+    <!-- Service Worker регистрация -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
     </script>
 </body>
 </html>
